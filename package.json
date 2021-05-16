@@ -1,0 +1,31 @@
+{
+  "name": "fairysupport_js_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "minify": "grunt default",
+    "build_prd": "fairysupport_js prd",
+    "build_stg": "fairysupport_js stg",
+    "build_dev": "fairysupport_js dev",
+    "build_local": "fairysupport_js local",
+    "watch_local": "watch \"npm run build_local\" ./src",
+    "server": "http-server ./distWork -a localhost -p 8000 -o page/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^1.4.0",
+    "grunt-cli": "^1.4.2",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^4.0.0",
+    "grunt-contrib-htmlmin": "^3.1.0",
+    "grunt-contrib-uglify": "^5.0.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "http-server": "^0.12.3",
+    "npm-run-all": "^4.1.5",
+    "watch": "^1.0.2"
+  },
+  "dependencies": {}
+}
