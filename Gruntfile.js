@@ -5,7 +5,7 @@ module.exports = function(grunt){
         files: [
           {
             cwd: 'distWork',
-            src: ['img/**/*'],
+            src: ['img/**/*', 'js/**/*.json', 'js/**/*.min.js', 'favicon.ico'],
             expand: true,
             dest: 'dist'
           }
@@ -42,7 +42,7 @@ module.exports = function(grunt){
         },
         files: [{
             cwd: 'distWork/page',
-            src: ['**/*.html'],
+            src: ['**/*'],
             expand: true,
             dest: 'dist/page'
         }]
@@ -50,7 +50,7 @@ module.exports = function(grunt){
     },
     watch: {
       scripts: {
-        files: ['distWork/js/**/*.js', 'distWork/css/**/*.css', 'distWork/page/**/*.html', 'distWork/img/**/*'],
+        files: ['distWork/js/**/*', 'distWork/css/**/*', 'distWork/page/**/*', 'distWork/img/**/*'],
         tasks: ['copy', 'cssmin', 'uglify', 'htmlmin'],
       },
     }
