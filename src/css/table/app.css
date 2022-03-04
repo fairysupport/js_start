@@ -1,0 +1,9 @@
+.sample{
+    border-collapse:  collapse;
+}
+.sample TD{
+    border: solid 1px;
+    padding: 10px;
+    text-align: center;
+    white-space: nowrap;
+}
