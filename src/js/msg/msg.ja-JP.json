@@ -1,0 +1,6 @@
+{
+     "invalidValue"  : "無効な値です"
+    ,"errorRequired" : "必須項目です"
+    ,"errorMinValue" : "${min}以下の値を入力してください"
+    ,"errorMaxValue" : "${max}以上の値を入力してください"
+}

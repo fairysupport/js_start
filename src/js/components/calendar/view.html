@@ -1,0 +1,53 @@
+<script data-load-only='true'>
+    l.container = {"position": "absolute", "display": "none", "border": "solid 1px", "borderColor": "#AAAAAA", "backgroundColor": "#FFFFFF", "padding": "3px"};
+    l.yearMonthBg = {"borderRadius": "10px", "border": "solid 1px", "borderColor": "#AAAAAA", "backgroundColor": "#EEEEEE", "padding": "4px 20px 4px 20px", "marginBottom": "10px", "textAlign": "center", "fontSize": "0px"};
+    l.yearText = {"fontSize": "14px", "width": "5ch"};
+    l.yearMonthSpace = {"marginLeft": "10px"};
+    l.arrowContainer = {"width": "27px", "height": "17px", "border": "0px", "backgroundColor": "transparent", "display": "inline-block", "cursor": "pointer"};
+    l.arrowBase = {"width": "0", "height": "0", "border": "5px solid transparent",  "display": "inline-block", "cursor": "pointer"};
+    l.arrowRight = {...l.arrowBase, ...{"borderRight": "0", "borderLeft": "10px solid #000000"}};
+    l.arrowLeft = {...l.arrowBase, ...{"borderRight": "10px solid #000000", "borderLeft": "0"}};
+    l.table = {"border": "0px", "borderCollapse": "collapse", "width": "100%"};
+    l.headFont = {"fontSize": "0.9em", "fontWeight": "bold", "textAlign": "center"};
+</script>
+<input data-calendar-obj='inputText' data-calendar-name="inputText" type='text' data-prop='{"name": (v.name ? v.name : ""), "value": (v.defaultYmd ? v.defaultYmd : "")}'>
+<div data-prop='{"style": l.container}' data-calendar-obj='calendarContainer'>
+    <div data-prop='{"style": l.yearMonthBg}'>
+        <button data-prop='{"style": l.arrowContainer}' data-calendar-name='preYear' type='button'>
+            <span data-prop='{"style": l.arrowLeft}'></span>
+        </button>
+        <span>
+            <input type='text' data-calendar-obj='calendarYear' data-calendar-name='calendar' data-prop='{"value": (new Date()).getFullYear(), "style": l.yearText}'>
+        </span>
+        <button data-prop='{"style": l.arrowContainer}' data-calendar-name='nextYear' type='button'>
+            <span data-prop='{"style": l.arrowRight}'></span>
+        </button>
+        <span data-prop='{"style": l.yearMonthSpace}'></span>
+        <button data-prop='{"style": l.arrowContainer}' data-calendar-name='preMonth' type='button'>
+            <span data-prop='{"style": l.arrowLeft}'></span>
+        </button>
+        <span>
+            <select data-calendar-obj='calendarMonth' data-calendar-name='calendar'>
+                <option data-for-start='l.i = 1' data-for-end='l.i <= 12' data-for-step='l.i++' data-prop='{"value": l.i}' data-text='l.i'></option>
+            </select>
+        </span>
+        <button data-prop='{"style": l.arrowContainer}' data-calendar-name='nextMonth' type='button'>
+            <span data-prop='{"style": l.arrowRight}'></span>
+        </button>
+    </div>
+    <table data-prop='{"style": l.table}'>
+        <thead>
+            <tr>
+                <th data-text='$f.componentMsg("calendar", "sun")' data-prop='{"style": l.headFont}'></th>
+                <th data-text='$f.componentMsg("calendar", "mon")' data-prop='{"style": l.headFont}'></th>
+                <th data-text='$f.componentMsg("calendar", "tue")' data-prop='{"style": l.headFont}'></th>
+                <th data-text='$f.componentMsg("calendar", "wed")' data-prop='{"style": l.headFont}'></th>
+                <th data-text='$f.componentMsg("calendar", "thu")' data-prop='{"style": l.headFont}'></th>
+                <th data-text='$f.componentMsg("calendar", "fri")' data-prop='{"style": l.headFont}'></th>
+                <th data-text='$f.componentMsg("calendar", "sat")' data-prop='{"style": l.headFont}'></th>
+            </tr>
+        </thead>
+        <tbody data-calendar-obj='calendarBody' data-calendar-name='date'>
+        </tbody>
+    </table>
+</div>
