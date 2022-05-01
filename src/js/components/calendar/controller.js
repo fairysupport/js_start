@@ -6,20 +6,20 @@ export class Calendar {
     }
 
     init(data) {
-        
+
         this.closeFunc = this.clickSomewhere.bind(this);
         window.addEventListener('click', this.closeFunc);
         this.colorInfo = data.colorInfo;
-        
+
         let v = new Validator();
         this.validator = v;
-        
+
         $f.addMeta(this.calendarYear, {"min": ('minYear' in data ? data.minYear : 0), "max": ('maxYear' in data ? data.maxYear : 9999)});
-        
+
         $f.validate(this.inputText, 'value', ['blur'], [v.initValidate.bind(v), v.ymdValidate.bind(v)]);
         $f.validate(this.calendarYear, 'value', ['input'], [v.initValidate.bind(v), v.requireValidate.bind(v), v.yearValidate.bind(v), v.minValueValidate.bind(v), v.maxValueValidate.bind(v)]);
         $f.validate(this.calendarMonth, 'value', ['input'], [v.initValidate.bind(v), v.requireValidate.bind(v), v.monthValidate.bind(v)]);
-        
+
         if (this.inputText.value !== '') {
             this.inputText_input();
         } else {
@@ -33,7 +33,7 @@ export class Calendar {
             this.outputBody(selectDate);
         }
     }
-    
+
     inputText_click(event) {
         this.calendarContainer.style.display = 'block';
     }
@@ -101,6 +101,9 @@ export class Calendar {
         if (this.calendarContainer && !this.calendarContainer.contains(event.target) && this.inputText !== event.target) {
             this.close();
         }
+        if (this.inputText === null || this.inputText === undefined || !('parentNode' in this.inputText) ||  ('parentNode' in this.inputText && (this.inputText.parentNode === null || this.inputText.parentNode === undefined))) {
+            window.removeEventListener("click", this.closeFunc);
+        }
     }
 
     close() {
@@ -133,8 +136,8 @@ export class Calendar {
     template() {
         return `
             <script data-load-only='true'>
-                l.tdStyle = {"fontSize":        "0.8em", 
-                             "fontWeight":      "normal", 
+                l.tdStyle = {"fontSize":        "0.8em",
+                             "fontWeight":      "normal",
                              "padding":         "3px",
                              "textAlign":       "center"};
                 l.divStyle = {"border":          "solid 1px",
@@ -200,5 +203,5 @@ export class Calendar {
             </tr>
         `;
     }
-    
+
 }

@@ -1,0 +1,92 @@
+<script data-load-only='true'>
+    l.dialogStyle = {"paddingTop": "1px", "paddingBottom": "1px", "borderRadius": "0.6rem", "boxShadow": "0 0 1em black", "position": "absolute", "display": "none", "flexDirection": "column", "backgroundColor": "#005FFF", "boxSizing": "content-box", "overflow": "hidden"};
+    l.rowVerticalStyle = {"margin": "0px", "padding": "0px", "height": "5px", "display": "flex", "flexDirection": "column"};
+    l.rowHorizontalStyle = {"margin": "0px", "padding": "0px", "height": "5px", "display": "flex", "flexDirection": "row", "backgroundColor": "transparent"};
+    l.rowBarStyle = {"margin": "0px", "padding": "0px", "height": "25px", "display": "flex", "flexDirection": "row"};
+    l.rowMiddleStyle = {"margin": "0px", "padding": "0px", "display": "flex", "flexDirection": "row"};
+
+    l.closeBtnStyle = {"cursor": "pointer", "display": "block", "flexBasis": "25px", "height": "20px", "border": "0px", "backgroundColor": "transparent", "position": "relative"};
+    l.closeLeftStyle = {"display": "block", "position": "absolute", "width": "20px", "height": "3px", "border": "0px", "backgroundColor": "#FFFFFF", "transform": "rotate(-45deg)", "left": "-0.2px"};
+    l.closeRightStyle = {"display": "block", "position": "absolute", "width": "20px", "height": "3px", "border": "0px", "backgroundColor": "#FFFFFF", "transform": "rotate(45deg)", "left": "-0.2px"};
+
+    l.topLeftBaseStyle = {"cursor": "nw-resize", "width": "1px", "height": "3px"};
+    l.topRightBaseStyle = {"cursor": "ne-resize", "width": "1px", "height": "3px"};
+    l.topLeftStyle = {...l.topLeftBaseStyle, ...{"border": "solid 1px", "padding": 0, "flexBasis": "1px", "borderColor": "transparent", "backgroundColor": "transparent"}};
+    l.topCenterStyle = {"height": "3px", "border": "solid 1px", "padding": 0, "flexBasis": "calc(100% - 2px)", "display": "flex", "flexDirection": "row", "borderColor": "transparent", "backgroundColor": "transparent"};
+    l.topCenterLeftStyle = {...l.topLeftBaseStyle, ...{"flexBasis": "10px", "height": "100%"}};
+    l.topCenterCenterStyle = {"cursor": "n-resize", "flexBasis": "calc(100% - 20px)", "height": "100%"};
+    l.topCenterRightStyle = {...l.topRightBaseStyle, ...{"flexBasis": "10px", "height": "100%"}};
+    l.topRightStyle = {...l.topRightBaseStyle, ...{"border": "solid 1px", "padding": 0, "flexBasis": "1px", "borderColor": "transparent", "backgroundColor": "transparent"}};
+
+    l.sideBaseStyle = {"width": "2px", "backgroundColor": "transparent", "padding": 0};
+    l.barLeftStyle = {"cursor": "w-resize", "flexBasis": "3px", "height": "20px", "border": "solid 0px", "backgroundColor": "#005FFF", "padding": 0, "display": "flex", "flexDirection": "column"};
+    l.middleTopLeftStyle = {...l.sideBaseStyle, ...{"cursor": "nw-resize", "height": "10px", "width": "100%"}};
+    l.middleTopLeftLeftStyle = {...l.sideBaseStyle, ...{"cursor": "w-resize", "height": "15px", "width": "100%"}};
+    l.barStyle = {"cursor": "move", "flexBasis": "calc(100% - 31px)", "height": "20px", "backgroundColor": "#005FFF"};
+    l.barRightStyle = {"cursor": "e-resize", "flexBasis": "3px", "height": "20px", "border": "solid 0px", "backgroundColor": "#005FFF", "padding": 0, "display": "flex", "flexDirection": "column"};
+    l.middleTopRightStyle = {...l.sideBaseStyle, ...{"cursor": "ne-resize", "height": "10px", "width": "100%"}};
+    l.middleTopRightRightStyle = {...l.sideBaseStyle, ...{"cursor": "e-resize", "height": "15px", "width": "100%"}};
+
+    l.middleLeftStyle = {"flexBasis": "3px", "height": "auto", "border": "solid 0px", "backgroundColor": "#005FFF", "padding": 0};
+    l.middleSideLeftStyle = {...l.sideBaseStyle, ...{"cursor": "w-resize", "width": "100%", "height": "calc(100% - 10px)"}};
+    l.middleBottomLeftStyle = {...l.sideBaseStyle, ...{"cursor": "sw-resize", "height": "10px", "width": "100%"}};
+    l.middleCenterStyle = {"flexBasis": "calc(100% - 6px)", "borderBottomLeftRadius": "0.6rem", "borderBottomRightRadius": "0.6rem", "border": "0px", "padding": 0, "height": "100%", "backgroundColor": "#FFFFFF", "overflow": " auto"};
+    l.middleRightStyle = {"flexBasis": "3px", "height": "auto", "border": "solid 0px", "backgroundColor": "#005FFF", "padding": 0};
+    l.middleSideRightStyle = {...l.sideBaseStyle, ...{"cursor": "e-resize", "width": "100%", "height": "calc(100% - 10px)"}};
+    l.middleBottomRightStyle = {...l.sideBaseStyle, ...{"cursor": "se-resize", "height": "10px", "width": "100%"}};
+
+    l.bottomLeftBaseStyle = {"cursor": "sw-resize", "width": "1px", "height": "3px"};
+    l.bottomRightBaseStyle = {"cursor": "se-resize", "width": "1px", "height": "3px"};
+    l.bottomLeftStyle = {...l.bottomLeftBaseStyle, ...{"border": "solid 1px", "padding": 0, "flexBasis": "1px", "borderColor": "transparent", "backgroundColor": "transparent"}};
+    l.bottomCenterStyle = {"height": "3px", "border": "solid 1px", "padding": 0, "flexBasis": "calc(100% - 2px)", "display": "flex", "flexDirection": "row", "borderColor": "transparent", "backgroundColor": "transparent"};
+    l.bottomCenterLeftStyle = {...l.bottomLeftBaseStyle, ...{"flexBasis": "10px", "height": "100%"}};
+    l.bottomCenterCenterStyle = {"cursor": "s-resize", "flexBasis": "calc(100% - 20px)", "height": "100%"};
+    l.bottomCenterRightStyle = {...l.bottomRightBaseStyle, ...{"flexBasis": "10px", "height": "100%"}};
+    l.bottomRightStyle = {...l.bottomRightBaseStyle, ...{"border": "solid 1px", "padding": 0, "flexBasis": "1px", "borderColor": "transparent", "backgroundColor": "transparent"}};
+
+</script>
+<div data-dialog-obj='dialog' data-dialog-name='dialog' data-prop='{"style": l.dialogStyle}'>
+    <div data-prop='{"style": l.rowHorizontalStyle}'>
+        <div data-dialog-name='topLeft' data-dialog-list='topLeft' data-prop='{"style": l.topLeftStyle}'></div>
+        <div data-prop='{"style": l.topCenterStyle}'>
+            <span data-dialog-name='topLeft' data-dialog-list='topLeft' data-prop='{"style": l.topCenterLeftStyle}'></span>
+            <span data-dialog-name='top' data-dialog-list='top' data-prop='{"style": l.topCenterCenterStyle}'></span>
+            <span data-dialog-name='topRight' data-dialog-list='topRight' data-prop='{"style": l.topCenterRightStyle}'></span>
+        </div>
+        <div data-dialog-name='topRight' data-dialog-list='topRight' data-prop='{"style": l.topRightStyle}'></div>
+    </div>
+    <div data-prop='{"style": l.rowBarStyle}'>
+        <div data-prop='{"style": l.barLeftStyle}'>
+            <div data-dialog-name='topLeft' data-dialog-list='topLeft' data-prop='{"style": l.middleTopLeftStyle}'></div>
+            <div data-dialog-name='left' data-dialog-list='left' data-prop='{"style": l.middleTopLeftLeftStyle}'></div>
+        </div>
+        <div data-dialog-name='bar' data-dialog-obj='bar' data-prop='{"style": l.barStyle}'></div>
+        <button data-dialog-name='close' data-dialog-obj='closeButton' data-dialog-list='closeButtonTotal' data-prop='{"style": l.closeBtnStyle}'>
+            <span data-dialog-list='closeButtonTotal' data-prop='{"style": l.closeLeftStyle}'></span><span data-dialog-list='closeButtonTotal' data-prop='{"style": l.closeRightStyle}'></span>
+        </button>
+        <div data-prop='{"style": l.barRightStyle}'>
+            <div data-dialog-name='topRight' data-dialog-list='topRight' data-prop='{"style": l.middleTopRightStyle}'></div>
+            <div data-dialog-name='right' data-dialog-list='right' data-prop='{"style": l.middleTopRightRightStyle}'></div>
+        </div>
+    </div>
+    <div data-prop='{"style": l.rowMiddleStyle}'>
+        <div data-prop='{"style": l.middleLeftStyle}'>
+            <div data-dialog-name='left' data-dialog-list='left' data-prop='{"style": l.middleSideLeftStyle}'></div>
+            <div data-dialog-name='bottomLeft' data-dialog-list='bottomLeft' data-prop='{"style": l.middleBottomLeftStyle}'></div>
+        </div>
+        <div data-dialog-obj='middleCenter' data-prop='{"style": l.middleCenterStyle}'></div>
+        <div data-prop='{"style": l.middleRightStyle}'>
+            <div data-dialog-name='right' data-dialog-list='right' data-prop='{"style": l.middleSideRightStyle}'></div>
+            <div data-dialog-name='bottomRight' data-dialog-list='bottomRight' data-prop='{"style": l.middleBottomRightStyle}'></div>
+        </div>
+    </div>
+    <div data-prop='{"style": l.rowHorizontalStyle}'>
+        <div data-dialog-name='bottomLeft' data-dialog-list='bottomLeft' data-prop='{"style": l.bottomLeftStyle}'></div>
+        <div data-prop='{"style": l.bottomCenterStyle}'>
+            <span data-dialog-name='bottomLeft' data-dialog-list='bottomLeft' data-prop='{"style": l.bottomCenterLeftStyle}'></span>
+            <span data-dialog-name='bottom' data-dialog-list='bottom' data-prop='{"style": l.bottomCenterCenterStyle}'></span>
+            <span data-dialog-name='bottomRight' data-dialog-list='bottomRight' data-prop='{"style": l.bottomCenterRightStyle}'></span>
+        </div>
+        <div data-dialog-name='bottomRight' data-dialog-list='bottomRight' data-prop='{"style": l.bottomRightStyle}'></div>
+    </div>
+</div>

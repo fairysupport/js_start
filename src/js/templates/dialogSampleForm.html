@@ -1,0 +1,55 @@
+<script data-load-only='true'>
+    l.formStyle = {"padding": "10px"};
+    l.rowStyle = {"marginBottom": "10px"};
+    l.labelStyle = {"display": "inline-block", "verticalAlign": "top"};
+</script>
+<form data-prop='{"style": l.formStyle}'>
+    <div data-prop='{"style": l.rowStyle}'>
+        <span data-prop='{"style": l.labelStyle}'>text:</span>
+        <input type='text' value=''>
+    </div>
+    <div data-prop='{"style": l.rowStyle}'>
+        <span data-prop='{"style": l.labelStyle}'>radio:</span>
+        <label for="dialogRadio1"><input type='radio' name='dialogRadio' id='dialogRadio1' value='1'>1</label>
+        <label for="dialogRadio2"><input type='radio' name='dialogRadio' id='dialogRadio2' value='2'>2</label>
+        <label for="dialogRadio3"><input type='radio' name='dialogRadio' id='dialogRadio3' value='3'>3</label>
+    </div>
+    <div data-prop='{"style": l.rowStyle}'>
+        <span data-prop='{"style": l.labelStyle}'>checkbox:</span>
+        <label for="dialogCheck1"><input type='checkbox' name='dialogCheck' id='dialogCheck1' value='1'>1</label>
+        <label for="dialogCheck2"><input type='checkbox' name='dialogCheck' id='dialogCheck2' value='2'>2</label>
+        <label for="dialogCheck3"><input type='checkbox' name='dialogCheck' id='dialogCheck3' value='3'>3</label>
+    </div>
+    <div data-prop='{"style": l.rowStyle}'>
+        <span data-prop='{"style": l.labelStyle}'>datetime-local:</span>
+        <input type='datetime-local' value=''>
+    </div>
+    <div data-prop='{"style": l.rowStyle}'>
+        <span data-prop='{"style": l.labelStyle}'>select:</span>
+        <select>
+             <option data-for-start='l.i = 0' data-for-end='l.i < v.hour' data-for-step='l.i++' data-text='l.i'></option>
+        </select>
+        :
+        <select>
+             <option data-for-start='l.i = 0' data-for-end='l.i < v.minute' data-for-step='l.i++' data-text='l.i'></option>
+        </select>
+        :
+        <select>
+             <option data-for-start='l.i = 0' data-for-end='l.i < v.seconds' data-for-step='l.i++' data-text='l.i'></option>
+        </select>
+    </div>
+    <div data-prop='{"style": l.rowStyle}'>
+        <span data-prop='{"style": l.labelStyle}'>color:</span>
+        <input type='color'>
+    </div>
+    <div data-prop='{"style": l.rowStyle}'>
+        <span>range:</span>
+        <input type='range' min="0" max="20">
+    </div>
+    <div data-prop='{"style": l.rowStyle}'>
+        <span data-prop='{"style": l.labelStyle}'>textarea:</span>
+        <textarea rows="10" cols="30"></textarea>
+    </div>
+
+    <input type='button' value='button' data-name='button'>
+</form>

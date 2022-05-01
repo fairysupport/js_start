@@ -9,12 +9,25 @@ export class Component {
                           '2020/02/02' : {'borderColor':'#AF02AF', 'backgroundColor':'#FA9AFA'},
                           '2021/03/02' : {'borderColor':'#01ABAD', 'backgroundColor':'#5EFCFE'}
         };
-        let calendarData = {'colorInfo': colorInfo, 
-                            'name': 'sampleYmd', 
-                            'defaultYmd': '2022/02/01', 
-                            'minYear': -4712, 
+        let calendarData = {'colorInfo': colorInfo,
+                            'name': 'sampleYmd',
+                            'defaultYmd': '2022/02/01',
+                            'minYear': -4712,
                             'maxYear': 9999};
         $f.appendLoadUniqueComponent(this.dateWrapper, 'calendar', calendarData);
+    }
+
+    dialogBtn_click(event){
+        let dialogInfo = {'content' : 'dialogSampleForm',
+                          'contentParam' : {'hour': 24,
+                                            'minute': 60,
+                                            'seconds': 60},
+                          'type': 'modal'};
+        $f.appendLoadUniqueComponent(this.body, 'dialog', dialogInfo);
+    }
+
+    button_click(event){
+        alert('button click');
     }
 
 }

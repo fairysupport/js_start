@@ -1,7 +1,7 @@
 {
   "name": "fairysupport_js_app",
   "version": "1.0.0",
-  "description": "",
+  "description": "app using fairysupport_js",
   "main": "",
   "scripts": {
     "minify": "grunt default",
