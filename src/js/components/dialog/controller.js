@@ -103,7 +103,7 @@ export class Dialog {
     dialog_click(event) {
         let bodyList = document.getElementsByTagName('body');
         let body = bodyList[0];
-        if (body.lastChild !== this.dialog) {
+        if (body.lastChild !== this.dialog && this.dialog !== null) {
             let bodyList = document.getElementsByTagName('body');
             bodyList[0].removeChild(this.dialog);
             bodyList[0].appendChild(this.dialog);

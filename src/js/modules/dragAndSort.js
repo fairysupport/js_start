@@ -1,7 +1,7 @@
 import {Parent} from './parent.js';
 
-export class DragAndDrop extends Parent {
-
+export class DragAndSort extends Parent {
+    
     constructor() {
         super();
     }
