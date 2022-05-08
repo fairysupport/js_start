@@ -172,6 +172,12 @@ export class Dialog {
         } else if (this.#mousedownStatus === this.#statusBar) {
             this.barDrag(event);
         }
+        
+        if ('modeless' !== this.#dialogType && this.#mousedownStatus !== null) {
+            this.dialogBack.style.width = document.documentElement.scrollWidth + 'px';
+            this.dialogBack.style.height = document.documentElement.scrollHeight + 'px';
+        }
+
     }
 
     barDrag(event) {
