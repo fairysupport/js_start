@@ -1,4 +1,5 @@
 <script data-load-only='true'>
+    l.dialogBackStyle = {"paddingTop": "0px", "border": "0px", "margin": "0px", "position": "absolute", "backgroundColor": "#808080", "top": "0px", "left": "0px", "opacity": "0.3"};
     l.dialogStyle = {"paddingTop": "1px", "paddingBottom": "1px", "borderRadius": "0.6rem", "boxShadow": "0 0 1em black", "position": "absolute", "display": "none", "flexDirection": "column", "backgroundColor": "#005FFF", "boxSizing": "content-box", "overflow": "hidden"};
     l.rowVerticalStyle = {"margin": "0px", "padding": "0px", "height": "5px", "display": "flex", "flexDirection": "column"};
     l.rowHorizontalStyle = {"margin": "0px", "padding": "0px", "height": "5px", "display": "flex", "flexDirection": "row", "backgroundColor": "transparent"};
@@ -45,6 +46,10 @@
     l.bottomRightStyle = {...l.bottomRightBaseStyle, ...{"border": "solid 1px", "padding": 0, "flexBasis": "1px", "borderColor": "transparent", "backgroundColor": "transparent"}};
 
 </script>
+<div data-if='"modeless" !== v.type' data-tag='hidden'>
+    <div data-dialog-obj='dialogBack' data-dialog-name='dialogBack' data-prop='{"style": l.dialogBackStyle}'>
+    </div>
+</div>
 <div data-dialog-obj='dialog' data-dialog-name='dialog' data-prop='{"style": l.dialogStyle}'>
     <div data-prop='{"style": l.rowHorizontalStyle}'>
         <div data-dialog-name='topLeft' data-dialog-list='topLeft' data-prop='{"style": l.topLeftStyle}'></div>

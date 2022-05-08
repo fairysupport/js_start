@@ -42,8 +42,8 @@ export class Parent {
         }
         
         let rowRect = rowObj.getBoundingClientRect();
-        let rowHalf = rowRect.y + (rowRect.height / 2);
-        if (event.clientY < rowHalf) {
+        let rowHalf = window.scrollY + rowRect.y + (rowRect.height / 2);
+        if (event.pageY < rowHalf) {
             rowObj.style.borderTop = this.dropBorder;
         } else {
             rowObj.style.borderBottom = this.dropBorder;
@@ -77,8 +77,8 @@ export class Parent {
         
         if (this.#dragObj !== rowObj) {
             let rowRect = rowObj.getBoundingClientRect();
-            let rowHalf = rowRect.y + (rowRect.height / 2);
-            if (event.clientY < rowHalf) {
+            let rowHalf = window.scrollY + rowRect.y + (rowRect.height / 2);
+            if (event.pageY < rowHalf) {
                 this.sortArea.insertBefore(this.#dragObj, rowObj);
             } else {
                 this.sortArea.removeChild(this.#dragObj);

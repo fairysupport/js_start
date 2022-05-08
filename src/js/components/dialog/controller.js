@@ -17,12 +17,20 @@ export class Dialog {
 
     #disabledMap = null;
 
+    #mousemoveFunc = null;
+    #mouseupFunc = null;
+    #userSelect = null;
+    
+    #dialogType = null;
+    
     constructor() {
     }
 
     init(data) {
+        
+        this.#dialogType = data.type;
 
-        if ('modeless' !== data.type) {
+        if ('modeless' !== this.#dialogType) {
             this.#disabledMap = new Map();
             let disabledTagList = ['input', 'select', 'textarea', 'a', 'button', 'form'];
             for (let disabledTag of disabledTagList) {
@@ -36,12 +44,15 @@ export class Dialog {
             }
         }
 
-        this.mousemoveFunc = this.mousemoveSomewhere.bind(this);
-        window.addEventListener('mousemove', this.mousemoveFunc);
+        this.#mousemoveFunc = this.mousemoveSomewhere.bind(this);
+        window.addEventListener('mousemove', this.#mousemoveFunc);
 
-        this.mouseupFunc = this.mouseupSomewhere.bind(this);
-        window.addEventListener('mouseup', this.mouseupFunc);
-
+        this.#mouseupFunc = this.mouseupSomewhere.bind(this);
+        window.addEventListener('mouseup', this.#mouseupFunc);
+        
+        let bodyList = document.getElementsByTagName('body');
+        this.#userSelect = bodyList[0].style.userSelect;
+        
         $f.loadTemplate(this.middleCenter, data.content, data.contentParam)
         .then(this.loadSuccess.bind(this))
         .catch(this.loadError.bind(this));
@@ -52,16 +63,21 @@ export class Dialog {
 
         this.dialog.style.display = 'flex';
 
-        let windowWidthHalf = window.innerWidth / 2;
-        let windowHeightHalf = window.innerHeight / 2;
+        let documentWidthHalf =   document.documentElement.clientWidth / 2;
+        let documentHeightHalf = document.documentElement.clientHeight / 2;
 
         let dialogWidthHalf = this.dialog.offsetWidth / 2;
         let dialogHeightHalf = this.dialog.offsetHeight / 2;
 
-        let left = windowWidthHalf - dialogWidthHalf;
-        let top = windowHeightHalf - dialogHeightHalf;
-        this.dialog.style.left = (left < 0 ? 0 : left) + 'px';
-        this.dialog.style.top = (top < 0 ? 0 : top) + 'px';
+        let left = documentWidthHalf - dialogWidthHalf;
+        let top = documentHeightHalf - dialogHeightHalf;
+        this.dialog.style.left = (left < 0 ? 0 : window.scrollX + left) + 'px';
+        this.dialog.style.top = (top < 0 ? 0 : window.scrollY + top) + 'px';
+        
+        if ('modeless' !== this.#dialogType) {
+            this.dialogBack.style.width = document.documentElement.scrollWidth + 'px';
+            this.dialogBack.style.height = document.documentElement.scrollHeight + 'px';
+        }
 
     }
 
@@ -74,8 +90,12 @@ export class Dialog {
     }
 
     close() {
-        window.removeEventListener("mousemove", this.mousemoveFunc);
-        window.removeEventListener("mouseup", this.mouseupFunc);
+        window.removeEventListener("mousemove", this.#mousemoveFunc);
+        window.removeEventListener("mouseup", this.#mouseupFunc);
+        
+        let bodyList = document.getElementsByTagName('body');
+        bodyList[0].style.userSelect = this.#userSelect;
+        
         if (this.#disabledMap !== null) {
             let eleList = this.#disabledMap.keys();
             for (let ele of eleList) {
@@ -84,6 +104,11 @@ export class Dialog {
         }
         this.#disabledMap = null;
         this.dialog = null;
+        
+        if ('modeless' !== this.#dialogType) {
+            this.dialogBack = null;
+        }
+
     }
 
     dialog_mousedown(event) {
@@ -92,12 +117,23 @@ export class Dialog {
                 return;
             }
         }
+        
         if (this.#mousedownStatus !== null) {
+            
             let bodyList = document.getElementsByTagName('body');
-            bodyList[0].removeChild(this.dialog);
-            bodyList[0].appendChild(this.dialog);
+            let body = bodyList[0];
+            
+            body.removeChild(this.dialog);
+            body.appendChild(this.dialog);
             this.closeButton.disabled = false;
+            
+            this.#userSelect = body.style.userSelect;
+            body.style.userSelect = 'none';
+        
+            window.getSelection().removeAllRanges();
+        
         }
+        
     }
 
     dialog_click(event) {
@@ -141,44 +177,44 @@ export class Dialog {
     barDrag(event) {
 
         let rect = this.dialog.getBoundingClientRect();
-        let curX = rect.x;
-        let curY = rect.y;
+        let curX = window.scrollX + rect.x;
+        let curY = window.scrollY + rect.y;
 
-        if (event.clientY < 10) {
+        if (event.pageY < 10) {
             return;
         }
 
-        if (event.clientY >= window.innerHeight - 80) {
+        if (event.pageY >= document.documentElement.scrollHeight - 80) {
             return;
         }
 
-        if (event.clientX < 80) {
+        if (event.pageX < 80) {
             return;
         }
 
-        if (event.clientX >= window.innerWidth - 50) {
+        if (event.pageX >= document.documentElement.scrollWidth - 50) {
             return;
         }
 
-        this.dialog.style.top = curY + (event.clientY - this.#preY) + 'px';
-        this.dialog.style.left = curX + (event.clientX - this.#preX) + 'px';
+        this.dialog.style.top = curY + (event.pageY - this.#preY) + 'px';
+        this.dialog.style.left = curX + (event.pageX - this.#preX) + 'px';
 
-        this.#preX = event.clientX;
-        this.#preY = event.clientY;
+        this.#preX = event.pageX;
+        this.#preY = event.pageY;
     }
 
     topDrag(event) {
 
-        if (this.#preY < event.clientY && this.dialog.offsetHeight <= 50) {
+        if (this.#preY < event.pageY && this.dialog.offsetHeight <= 50) {
             return;
         }
 
-        if (event.clientY < 15) {
+        if (event.pageY < 15) {
             return;
         }
 
-        if (event.clientY < this.#preY) {
-            let plusHeight = this.#preY - event.clientY;
+        if (event.pageY < this.#preY) {
+            let plusHeight = this.#preY - event.pageY;
             let dialogHeight = this.dialog.offsetHeight - 2 + plusHeight;
             if (dialogHeight <= 50) {
                 return;
@@ -186,7 +222,7 @@ export class Dialog {
             this.dialog.style.height = dialogHeight + 'px';
             this.middleCenter.style.height = this.middleCenter.offsetHeight + plusHeight + 'px';
         } else {
-            let minusHeight = event.clientY - this.#preY;
+            let minusHeight = event.pageY - this.#preY;
             let dialogHeight = this.dialog.offsetHeight - 2 - minusHeight;
             if (dialogHeight <= 50) {
                 return;
@@ -194,42 +230,45 @@ export class Dialog {
             this.dialog.style.height = dialogHeight + 'px';
             this.middleCenter.style.height = this.middleCenter.offsetHeight - minusHeight + 'px';
         }
-        this.dialog.style.top = event.clientY + 'px';
+        this.dialog.style.top = event.pageY + 'px';
 
-        this.#preX = event.clientX;
-        this.#preY = event.clientY;
+        this.#preX = event.pageX;
+        this.#preY = event.pageY;
     }
 
     leftDrag(event) {
 
         let rect = this.dialog.getBoundingClientRect();
-        let curX = rect.x;
+        let curX = window.scrollX + rect.x;
 
-        if (event.clientX >= curX + this.dialog.offsetWidth - 50) {
+        if (event.pageX >= curX + this.dialog.offsetWidth - 50) {
             return;
         }
 
-        if (event.clientX < curX) {
-            let dialogWidth = this.dialog.offsetWidth + (curX - event.clientX);
+        if (event.pageX < curX) {
+            let dialogWidth = this.dialog.offsetWidth + (curX - event.pageX);
             if (dialogWidth <= 50) {
                 return;
             }
             this.dialog.style.width = dialogWidth + 'px';
         } else {
-            let dialogWidth = this.dialog.offsetWidth - (event.clientX - curX);
+            let dialogWidth = this.dialog.offsetWidth - (event.pageX - curX);
             if (dialogWidth <= 50) {
                 return;
             }
             this.dialog.style.width = dialogWidth + 'px';
         }
-        this.dialog.style.left = event.clientX + 'px';
+        this.dialog.style.left = event.pageX + 'px';
+        
+        this.#preX = event.pageX;
+        this.#preY = event.pageY;
     }
 
     rightDrag(event) {
 
         let rect = this.dialog.getBoundingClientRect();
-        let curX = rect.x;
-        let newWidth = event.clientX - curX;
+        let curX = window.scrollX + rect.x;
+        let newWidth = event.pageX - curX;
 
         if (newWidth <= 50) {
             return;
@@ -237,20 +276,22 @@ export class Dialog {
 
         this.dialog.style.width = newWidth + 'px';
 
+        this.#preX = event.pageX;
+        this.#preY = event.pageY;
     }
 
     bottomDrag(event) {
 
-        if (this.#preY > event.clientY && this.dialog.offsetHeight <= 50) {
+        if (this.#preY > event.pageY && this.dialog.offsetHeight <= 50) {
             return;
         }
 
-        if (event.clientY < 15) {
+        if (event.pageY < 15) {
             return;
         }
 
-        if (event.clientY > this.#preY) {
-            let plusHeight =  event.clientY - this.#preY;
+        if (event.pageY > this.#preY) {
+            let plusHeight =  event.pageY - this.#preY;
             let dialogHeight = this.dialog.offsetHeight - 2 + plusHeight;
             if (dialogHeight <= 50) {
                 return;
@@ -258,7 +299,7 @@ export class Dialog {
             this.dialog.style.height = dialogHeight + 'px';
             this.middleCenter.style.height = this.middleCenter.offsetHeight + plusHeight + 'px';
         } else {
-            let minusHeight = this.#preY - event.clientY;
+            let minusHeight = this.#preY - event.pageY;
             let dialogHeight = this.dialog.offsetHeight - 2 - minusHeight;
             if (dialogHeight <= 50) {
                 return;
@@ -267,12 +308,14 @@ export class Dialog {
             this.middleCenter.style.height = this.middleCenter.offsetHeight - minusHeight + 'px';
         }
 
-        this.#preX = event.clientX;
-        this.#preY = event.clientY;
+        this.#preX = event.pageX;
+        this.#preY = event.pageY;
     }
 
     mouseupSomewhere(event) {
         this.#mousedownStatus = null;
+        let bodyList = document.getElementsByTagName('body');
+        bodyList[0].style.userSelect = this.#userSelect;
     }
 
     topLeft_mousedown(event) {
@@ -282,8 +325,8 @@ export class Dialog {
         for (const item of this.topLeft.values()) {
             if (event.currentTarget === item) {
                 this.#mousedownStatus = this.#statusTopLeft;
-                this.#preX = event.clientX;
-                this.#preY = event.clientY;
+                this.#preX = event.pageX;
+                this.#preY = event.pageY;
                 return;
             }
         }
@@ -296,8 +339,8 @@ export class Dialog {
         for (const item of this.top.values()) {
             if (event.currentTarget === item) {
                 this.#mousedownStatus = this.#statusTop;
-                this.#preX = event.clientX;
-                this.#preY = event.clientY;
+                this.#preX = event.pageX;
+                this.#preY = event.pageY;
                 return;
             }
         }
@@ -310,8 +353,8 @@ export class Dialog {
         for (const item of this.topRight.values()) {
             if (event.currentTarget === item) {
                 this.#mousedownStatus = this.#statusTopRight;
-                this.#preX = event.clientX;
-                this.#preY = event.clientY;
+                this.#preX = event.pageX;
+                this.#preY = event.pageY;
                 return;
             }
         }
@@ -324,8 +367,8 @@ export class Dialog {
         for (const item of this.left.values()) {
             if (event.currentTarget === item) {
                 this.#mousedownStatus = this.#statusLeft;
-                this.#preX = event.clientX;
-                this.#preY = event.clientY;
+                this.#preX = event.pageX;
+                this.#preY = event.pageY;
                 return;
             }
         }
@@ -338,8 +381,8 @@ export class Dialog {
         for (const item of this.right.values()) {
             if (event.currentTarget === item) {
                 this.#mousedownStatus = this.#statusRight;
-                this.#preX = event.clientX;
-                this.#preY = event.clientY;
+                this.#preX = event.pageX;
+                this.#preY = event.pageY;
                 return;
             }
         }
@@ -352,8 +395,8 @@ export class Dialog {
         for (const item of this.bottomLeft.values()) {
             if (event.currentTarget === item) {
                 this.#mousedownStatus = this.#statusBottomLeft;
-                this.#preX = event.clientX;
-                this.#preY = event.clientY;
+                this.#preX = event.pageX;
+                this.#preY = event.pageY;
                 return;
             }
         }
@@ -366,8 +409,8 @@ export class Dialog {
         for (const item of this.bottom.values()) {
             if (event.currentTarget === item) {
                 this.#mousedownStatus = this.#statusBottom;
-                this.#preX = event.clientX;
-                this.#preY = event.clientY;
+                this.#preX = event.pageX;
+                this.#preY = event.pageY;
                 return;
             }
         }
@@ -380,8 +423,8 @@ export class Dialog {
         for (const item of this.bottomRight.values()) {
             if (event.currentTarget === item) {
                 this.#mousedownStatus = this.#statusBottomRight;
-                this.#preX = event.clientX;
-                this.#preY = event.clientY;
+                this.#preX = event.pageX;
+                this.#preY = event.pageY;
                 return;
             }
         }
@@ -393,8 +436,8 @@ export class Dialog {
         }
         if (event.currentTarget === this.bar) {
             this.#mousedownStatus = this.#statusBar;
-            this.#preX = event.clientX;
-            this.#preY = event.clientY;
+            this.#preX = event.pageX;
+            this.#preY = event.pageY;
             return;
         }
     }
