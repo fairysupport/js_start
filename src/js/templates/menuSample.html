@@ -1,0 +1,27 @@
+<script data-load-only='true'>
+    l.menuStyle = {"padding": "10px", "backgroundColor": "#5D99FF", "height": "100%"};
+    l.rowStyle = {"marginTop": "3px"};
+    l.sampleLinkStyle = {"textDecoration": "underline", "pointerEvents": "none"};
+</script>
+<div data-prop='{"style": l.menuStyle}'>
+    <div data-prop='{"style": l.rowStyle}'>
+        <a data-prop='{"style": l.sampleLinkStyle}'>link 1</a>
+    </div>
+    <div data-prop='{"style": l.rowStyle}'>
+        <a data-prop='{"style": l.sampleLinkStyle}'>link 2</a>
+    </div>
+    <div data-prop='{"style": l.rowStyle}'>
+        <select>
+             <option data-for-start='l.i = 0' data-for-end='l.i < v.hour' data-for-step='l.i++' data-text='l.i'></option>
+        </select>
+        :
+        <select>
+             <option data-for-start='l.i = 0' data-for-end='l.i < v.minute' data-for-step='l.i++' data-text='l.i'></option>
+        </select>
+        :
+        <select>
+             <option data-for-start='l.i = 0' data-for-end='l.i < v.seconds' data-for-step='l.i++' data-text='l.i'></option>
+        </select>
+    </div>
+    <button type='button'>button</button>
+</div>

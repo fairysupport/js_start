@@ -123,7 +123,6 @@ export class Dialog {
             let bodyList = document.getElementsByTagName('body');
             let body = bodyList[0];
             
-            body.removeChild(this.dialog);
             body.appendChild(this.dialog);
             this.closeButton.disabled = false;
             
@@ -141,7 +140,6 @@ export class Dialog {
         let body = bodyList[0];
         if (body.lastChild !== this.dialog && this.dialog !== null) {
             let bodyList = document.getElementsByTagName('body');
-            bodyList[0].removeChild(this.dialog);
             bodyList[0].appendChild(this.dialog);
             this.closeButton.disabled = false;
         }

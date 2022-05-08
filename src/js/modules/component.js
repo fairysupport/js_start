@@ -15,6 +15,14 @@ export class Component {
                             'minYear': -4712,
                             'maxYear': 9999};
         $f.appendLoadUniqueComponent(this.dateWrapper, 'calendar', calendarData);
+        
+        
+        let menuInfo = {'content' : 'menuSample',
+                        'contentParam' : {'hour': 24,
+                                          'minute': 60,
+                                          'seconds': 60}};
+        $f.appendLoadSingleComponent(this.body, 'sideMenu', menuInfo);
+        
     }
 
     dialogBtn_click(event){
@@ -24,6 +32,10 @@ export class Component {
                                             'seconds': 60},
                           'type': 'modal'};
         $f.appendLoadUniqueComponent(this.body, 'dialog', dialogInfo);
+    }
+
+    sideMenuBtn_click(event){
+        $f.getComponentController('sideMenu').open(event.currentTarget);
     }
 
     button_click(event){
