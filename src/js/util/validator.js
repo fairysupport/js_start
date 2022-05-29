@@ -152,7 +152,7 @@ export class Validator {
     }
     
     showMsg(meta, msg){
-        if (meta && meta.msgObj) {
+        if (meta && 'msgObj' in meta) {
             meta.msgObj.textContent = msg;
         }
     }
