@@ -14,14 +14,13 @@ export class Component {
                             'defaultYmd': '2022/02/01',
                             'minYear': -4712,
                             'maxYear': 9999};
-        $f.appendLoadUniqueComponent(this.dateWrapper, 'calendar', calendarData);
-        
         
         let menuInfo = {'content' : 'menuSample',
                         'contentParam' : {'hour': 24,
                                           'minute': 60,
                                           'seconds': 60}};
-        $f.appendLoadSingleComponent(this.body, 'sideMenu', menuInfo);
+        
+        $f.useDomAsTemplate(this.body, {'calendarData': calendarData, 'menuInfo' : menuInfo});
         
     }
 
