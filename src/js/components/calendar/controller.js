@@ -128,8 +128,8 @@ export class Calendar {
         }
         let dateObj = new Date();
         dateObj.setFullYear(this.calendarYear.value);
-        dateObj.setMonth(this.calendarMonth.value - 1);
         dateObj.setDate(1);
+        dateObj.setMonth(this.calendarMonth.value - 1);
         $f.loadStringTemplate(this.calendarBody, this.template(), {'dateObj': dateObj, 'selectDate': this.selectDate, 'colorInfo': this.colorInfo});
     }
 

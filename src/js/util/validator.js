@@ -134,8 +134,8 @@ export class Validator {
         
         let date = new Date();
         date.setFullYear(ymdSplit[0] - 0);
-        date.setMonth(ymdSplit[1] - 1);
         date.setDate(ymdSplit[2] - 0);
+        date.setMonth(ymdSplit[1] - 1);
         if (date.getFullYear() !== ymdSplit[0] - 0) {
             this.showMsg(meta, $f.msg('invalidValue'));
             return false;
