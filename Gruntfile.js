@@ -35,13 +35,13 @@ module.exports = function(grunt){
     },
     uglify: {
       dist: {
-        files: {
+        files: [{
             cwd: 'distWork/js',
             src: ['**/*.js', '!**/*.min.js'],
             dest: 'dist/js',
             expand: true,
             ext: '.js'
-        }
+        }]
       }
     },
     htmlmin: {
