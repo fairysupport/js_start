@@ -53,10 +53,15 @@ module.exports = function(grunt){
           minifyCSS : true
         },
         files: [{
-            cwd: 'distWork/page',
-            src: ['**/*'],
-            expand: true,
-            dest: 'dist/page'
+                   cwd: 'distWork',
+                   src: ['page/**/*.html'],
+                   expand: true,
+                   dest: 'dist'
+                },{
+                   cwd: 'distWork',
+                   src: ['js/templates/**/*.html'],
+                   expand: true,
+                   dest: 'dist'
         }]
       }
     },
