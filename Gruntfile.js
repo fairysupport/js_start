@@ -1,7 +1,7 @@
 module.exports = function(grunt){
   grunt.initConfig({
     copy: {
-      target: {
+      dist: {
         files: [
           {
             cwd: 'distWork',
@@ -11,9 +11,19 @@ module.exports = function(grunt){
           }
         ]
       },
+      customize: {
+        files: [
+          {
+            cwd: 'distWork',
+            src: ['css/**/*', 'img/**/*', 'js/**/*', 'page/**/*', 'favicon.ico'],
+            expand: true,
+            dest: 'dist'
+          }
+        ]
+      }
     },
     cssmin: {
-      target: {
+      dist: {
         files: [{
           cwd: 'distWork/css',
           src: '**/*.css',
@@ -24,16 +34,18 @@ module.exports = function(grunt){
       }
     },
     uglify: {
-        files: { 
+      dist: {
+        files: {
             cwd: 'distWork/js',
             src: ['**/*.js', '!**/*.min.js'],
             dest: 'dist/js',
             expand: true,
             ext: '.js'
         }
+      }
     },
     htmlmin: {
-      target: {
+      dist: {
         options: {
           removeComments: true,
           collapseWhitespace: true,
@@ -49,10 +61,14 @@ module.exports = function(grunt){
       }
     },
     watch: {
-      scripts: {
+      dist: {
         files: ['distWork/js/**/*', 'distWork/css/**/*', 'distWork/page/**/*', 'distWork/img/**/*'],
-        tasks: ['copy', 'cssmin', 'uglify', 'htmlmin'],
+        tasks: ['copy:dist', 'cssmin:dist', 'uglify:dist', 'htmlmin:dist']
       },
+      customize: {
+        files: ['distWork/**/*'],
+        tasks: ['copy:customize']
+      }
     }
   });
 
@@ -62,6 +78,6 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['copy', 'cssmin', 'uglify', 'htmlmin']);
+  grunt.registerTask('default', ['copy:dist', 'cssmin:dist', 'uglify:dist', 'htmlmin:dist']);
 
 }

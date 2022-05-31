@@ -10,7 +10,8 @@
     "build_dev": "fairysupport_js dev",
     "build_local": "fairysupport_js local",
     "watch_local": "watch \"npm run build_local\" ./src",
-    "server": "http-server ./distWork -a localhost -p 8000 -o page/index.html"
+    "server": "http-server ./distWork -a localhost -p 8000 -o page/index.html",
+    "copy_dist_work": "grunt watch:customize"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +29,6 @@
     "watch": "^1.0.2"
   },
   "dependencies": {
-    "fairysupport_js": "^1.7.2"
+    "fairysupport_js": "^1.7.3"
   }
 }
