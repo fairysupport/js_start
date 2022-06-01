@@ -1,0 +1,4 @@
+{
+     "jsServer" : "http://localhost:8000"
+    ,"pageRoot" : "http://localhost:8000/page"
+}
