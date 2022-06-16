@@ -3,159 +3,194 @@ export class Validator {
     constructor() {
     }
 
-    initValidate (target, property, newValue, old, arg) {
-        let meta = $f.getMeta(target);
-        this.showMsg(meta, '');
-        return true;
+    init (target, property, newValue, oldValue, arg, event) {
+        let valid = true;
+        valid = this.showMsg(arg, '');
+        return valid;
     }
     
-    requireValidate (target, property, newValue, old, arg) {
-        let meta = $f.getMeta(target);
-        if (newValue === '' || newValue === null || newValue === undefined) {
-            this.showMsg(meta, $f.msg('errorRequired'));
-            return false;
-        } else {
-            return true;
+    require (target, property, newValue, oldValue, arg, event) {
+        let valid = true;
+        if (this.isEmpty(newValue)) {
+            valid = this.showMsg(arg, $f.msg('errorRequired'));
         }
+        return valid;
     }
     
-    minValueValidate (target, property, newValue, old, arg) {
-        if (newValue === '' || newValue === null || newValue === undefined) {
-            return true;
+    intType (target, property, newValue, oldValue, arg, event) {
+        let valid = true;
+        if (this.isEmpty(newValue)) {
+            return valid;
         }
-        let meta = $f.getMeta(target);
-        if (!meta || !'min' in meta) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
-        } else if (meta.min > newValue) {
-            this.showMsg(meta, $f.msg('errorMinValue', {'min': meta.min}));
-            return false;
-        } else {
-            return true;
+        let reg = new RegExp('(^[-]{0,1}[1-9]{1}[0-9]*$|^[0]{1}$)', 'g');
+        if (!(reg.test(newValue))) {
+            valid = this.showMsg(arg, $f.msg('errorIntValue'));
         }
+        return valid;
     }
     
-    maxValueValidate (target, property, newValue, old, arg) {
-        if (newValue === '' || newValue === null || newValue === undefined) {
-            return true;
+    minValue (target, property, newValue, oldValue, arg, event) {
+        let valid = true;
+        if (this.isEmpty(newValue)) {
+            return valid;
         }
-        let meta = $f.getMeta(target);
-        if (!meta || !'max' in meta) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
-        } else if (meta.max < newValue) {
-            this.showMsg(meta, $f.msg('errorMaxValue', {'max': meta.max}));
-            return false;
-        } else {
-            return true;
+        if (!arg || !'min' in arg) {
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+        } else if (arg.min > newValue) {
+            valid = this.showMsg(arg, $f.msg('errorMinValue', {'min': arg.min}));
         }
+        return valid;
     }
     
-    yearValidate (target, property, newValue, old, arg) {
-        if (newValue === '' || newValue === null || newValue === undefined) {
-            return true;
+    maxValue (target, property, newValue, oldValue, arg, event) {
+        let valid = true;
+        if (this.isEmpty(newValue)) {
+            return valid;
         }
-        let meta = $f.getMeta(target);
-        let castValue = String(newValue - 0);
-        if (String(newValue) !== castValue) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+        if (!arg || !'max' in arg) {
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+        } else if (arg.max < newValue) {
+            valid = this.showMsg(arg, $f.msg('errorMaxValue', {'max': arg.max}));
         }
-        let reg = new RegExp('^[-]?[0-9]+$', 'g');
-        if (!reg.test(newValue)) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
-        }
-        return true;
+        return valid;
     }
     
-    monthValidate (target, property, newValue, old, arg) {
-        if (newValue === '' || newValue === null || newValue === undefined) {
-            return true;
+    year (target, property, newValue, oldValue, arg, event) {
+        let valid = true;
+        if (this.isEmpty(newValue)) {
+            return valid;
         }
-        let meta = $f.getMeta(target);
-        let castValue = String(newValue - 0);
-        if (String(newValue) !== castValue) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+        valid = this.intType(target, property, newValue, oldValue, arg, event);
+        return valid;
+    }
+    
+    month (target, property, newValue, oldValue, arg, event) {
+        let valid = true;
+        if (this.isEmpty(newValue)) {
+            return valid;
         }
-        let reg = new RegExp('^[0-9]+$', 'g');
-        if (!reg.test(newValue)) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+        valid = this.intType(target, property, newValue, oldValue, arg, event);
+        if (!valid) {
+            return valid;
         }
         if (newValue < 1 || 12 < newValue) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+            return valid;
         }
-        return true;
+        return valid;
     }
     
-    ymdValidate (target, property, newValue, old, arg) {
-        if (newValue === '' || newValue === null || newValue === undefined) {
-            return true;
+    day (target, property, newValue, oldValue, arg, event) {
+        let valid = true;
+        if (this.isEmpty(newValue)) {
+            return valid;
         }
-        let meta = $f.getMeta(target);
+        valid = this.intType(target, property, newValue, oldValue, arg, event);
+        if (!valid) {
+            return valid;
+        }
+        if (newValue < 1 || 31 < newValue) {
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+            return valid;
+        }
+        return valid;
+    }
+    
+    ymd (target, property, newValue, oldValue, arg, event) {
+        let valid = true;
+        if (this.isEmpty(newValue)) {
+            return valid;
+        }
         let ymdSplit = newValue.split('/');
         if (ymdSplit.length !== 3) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+            return valid;
         }
-        if (ymdSplit[1].length !== 2) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+        if (ymdSplit[0].length <= 0) {
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+            return valid;
         }
-        if (ymdSplit[2].length !== 2) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+        let month = ymdSplit[1].replace(/^0+/, '');
+        if (ymdSplit[1].length !== 2 || month.length < 1) {
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+            return valid;
+        }
+        let day = ymdSplit[2].replace(/^0+/, '');
+        if (ymdSplit[2].length !== 2 || day.length < 1) {
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+            return valid;
         }
         
-        let castValue = String(ymdSplit[0] - 0);
-        if (ymdSplit[0] !== castValue) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+        valid = this.year(target, property, ymdSplit[0], ymdSplit[0], null, event);
+        if (!valid) {
+            return valid;
         }
         
-        let reg = new RegExp('^[-]?[0-9]+$', 'g');
-        if (!reg.test(ymdSplit[0])) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+        valid = this.month(target, property, month, month, null, event);
+        if (!valid) {
+            return valid;
         }
-        reg = new RegExp('^[0-9]+$', 'g');
-        if (!reg.test(ymdSplit[1])) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
-        }
-        reg.lastIndex = 0;
-        if (!reg.test(ymdSplit[2])) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+        
+        valid = this.day(target, property, day, day, null, event);
+        if (!valid) {
+            return valid;
         }
         
         let date = new Date();
         date.setFullYear(ymdSplit[0] - 0);
-        date.setDate(ymdSplit[2] - 0);
-        date.setMonth(ymdSplit[1] - 1);
+        date.setDate(day - 0);
+        date.setMonth(month - 1);
         if (date.getFullYear() !== ymdSplit[0] - 0) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+            return valid;
         }
-        if (date.getMonth() !== ymdSplit[1] - 1) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+        if (date.getMonth() !== month - 1) {
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+            return valid;
         }
-        if (date.getDate() !== ymdSplit[2] - 0) {
-            this.showMsg(meta, $f.msg('invalidValue'));
-            return false;
+        if (date.getDate() !== day - 0) {
+            valid = this.showMsg(arg, $f.msg('invalidValue'));
+            return valid;
         }
-        return true;
+        return valid;
     }
     
-    showMsg(meta, msg){
-        if (meta && 'msgObj' in meta) {
-            meta.msgObj.textContent = msg;
+    inputFinalize (target, property, newValue, oldValue, arg, event, valid, validResult) {
+        let result = {};
+        if (this.isInput(event)) {
+            result['forceNewValue'] = newValue;
+            if (valid) {
+                result['oldValueAllEvent'] = newValue;
+            }
         }
+        return result;
     }
     
+    isEmpty(value){
+        if (value === '' || value === null || value === undefined) {
+            return true;
+        }
+        return false;
+    }
+
+    showMsg(arg, msg){
+        let result = false;
+        if (arg && 'msgObj' in arg) {
+            arg.msgObj.textContent = msg;
+        }
+        if (this.isEmpty(msg)) {
+            result = true;
+        } else {
+            result = false;
+        }
+        return result;
+    }
+    
+    isInput(event){
+        if (event && 'type' in event && 'input' === event.type) {
+            return true;
+        }
+        return false;
+    }
 
 }

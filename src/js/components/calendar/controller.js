@@ -14,11 +14,9 @@ export class Calendar {
         let v = new Validator();
         this.validator = v;
 
-        $f.addMeta(this.calendarYear, {"min": ('minYear' in data ? data.minYear : 0), "max": ('maxYear' in data ? data.maxYear : 9999)});
-
-        $f.validate(this.inputText, 'value', ['blur'], [v.initValidate.bind(v), v.ymdValidate.bind(v)]);
-        $f.validate(this.calendarYear, 'value', ['input'], [v.initValidate.bind(v), v.requireValidate.bind(v), v.yearValidate.bind(v), v.minValueValidate.bind(v), v.maxValueValidate.bind(v)]);
-        $f.validate(this.calendarMonth, 'value', ['input'], [v.initValidate.bind(v), v.requireValidate.bind(v), v.monthValidate.bind(v)]);
+        $f.validate('component_calendar', this.inputText, 'value', ['blur', 'input', null], [v.init.bind(v), v.require.bind(v), v.ymd.bind(v)], null, v.inputFinalize.bind(v));
+        $f.validate('component_calendar', this.calendarYear, 'value', ['blur', 'input', null], [v.init.bind(v), v.require.bind(v), v.year.bind(v), v.minValue.bind(v), v.maxValue.bind(v)], {"min": ('minYear' in data ? data.minYear : 0), "max": ('maxYear' in data ? data.maxYear : 9999)}, v.inputFinalize.bind(v));
+        $f.validate('component_calendar', this.calendarMonth, 'value', ['blur', 'input', null], [v.init.bind(v), v.require.bind(v), v.month.bind(v)], null, v.inputFinalize.bind(v));
 
         if (this.inputText.value !== '') {
             this.inputText_input();
@@ -39,7 +37,7 @@ export class Calendar {
     }
 
     inputText_input(){
-        if (this.validator.ymdValidate(this.inputText, 'value', this.inputText.value)) {
+        if ($f.getValidateLatestResult('component_calendar', this.inputText, 'value', 'input')) {
             let inputYmd = this.inputText.value.split('/');
             let inputY = inputYmd[0];
             let inputM = inputYmd[1] - 0;
@@ -86,8 +84,16 @@ export class Calendar {
         this.outputBody();
     }
 
-    calendar_input(event) {
-        this.outputBody();
+    calendarYear_input(event) {
+        if ($f.getValidateLatestResult('component_calendar', this.calendarYear, 'value', 'input')) {
+            this.outputBody();
+        }
+    }
+
+    calendarMonth_input(event) {
+        if ($f.getValidateLatestResult('component_calendar', this.calendarMonth, 'value', 'input')) {
+            this.outputBody();
+        }
     }
 
     date_click(event) {

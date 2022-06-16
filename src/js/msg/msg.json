@@ -1,6 +1,7 @@
 {
      "invalidValue"  : "Invalid value"
     ,"errorRequired" : "Required"
+    ,"errorIntValue" : "Please enter an integer"
     ,"errorMinValue" : "Please enter value less than or equal to ${min}"
     ,"errorMaxValue" : "Please enter value more than or equal to ${max}"
 }
