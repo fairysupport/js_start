@@ -7,13 +7,16 @@ sample
 </title>
 <script id="fs-js" src="$envValue(jsServer)/js/fairysupport.min.js" data-page-root="$envValue(pageRoot)"></script>
 </head>
-<body data-obj='body'>
+<body data-obj='body'><div id='aaa'></div>
     <div data-obj='dateWrapper'>
         <span>calendar:</span>
         <span data-unique-component='calendar' data-unique-component-variable='v.calendarData' data-tag='hidden'></span>
     </div>
     <div>
-        <button data-name='dialogBtn' type='button'>dialog</button>
+        <button data-name='modaldialogBtn' type='button'>modal dialog</button>
+    </div>
+    <div>
+        <button data-name='modelessDialogBtn' type='button'>modeless dialog</button>
     </div>
     <div>
         <button data-name='sideMenuBtn' type='button'>sideMenu</button>

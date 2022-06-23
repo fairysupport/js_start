@@ -24,12 +24,33 @@ export class Component {
         
     }
 
-    dialogBtn_click(event){
-        let dialogInfo = {'content' : 'dialogSampleForm',
+    modaldialogBtn_click(event){
+        let dialogInfo = {'type' : 'modal',
+                          'contentType' : 'template',
+                          'content' : 'dialogSampleForm',
                           'contentParam' : {'hour': 24,
                                             'minute': 60,
                                             'seconds': 60},
-                          'type': 'modal'};
+                          'name' : 'Sample',
+                          'frame' : true,
+                          'minBtn' : true,
+                          'maxBtn' : true,
+                          'closeBtn' : true};
+        $f.appendLoadUniqueComponent(this.body, 'dialog', dialogInfo);
+    }
+
+    modelessDialogBtn_click(event){
+        let dialogInfo = {'type' : 'modeless',
+                          'contentType' : 'template',
+                          'content' : 'dialogSampleForm',
+                          'contentParam' : {'hour': 24,
+                                            'minute': 60,
+                                            'seconds': 60},
+                          'name' : 'Sample',
+                          'frame' : true,
+                          'minBtn' : true,
+                          'maxBtn' : true,
+                          'closeBtn' : true};
         $f.appendLoadUniqueComponent(this.body, 'dialog', dialogInfo);
     }
 

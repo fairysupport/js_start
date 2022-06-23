@@ -23,11 +23,21 @@ export class Dialog {
     
     #dialogType = null;
     
+    #beforeMaxTop = null;
+    #beforeMaxLeft = null;
+    #beforeMaxWidth = null;
+    #beforeMaxHeight = null;
+    #beforeMaxMiddleCenterHeight = null;
+
+    #name = null;
+
     constructor() {
     }
-
+    
     init(data) {
         
+        this.#name = data.name;
+
         this.#dialogType = data.type;
 
         if ('modeless' !== this.#dialogType) {
@@ -36,7 +46,7 @@ export class Dialog {
             for (let disabledTag of disabledTagList) {
                 let eleList = document.getElementsByTagName(disabledTag);
                 for (let i = 0; i < eleList.length; i++) {
-                    if (!eleList.item(i).disabled && eleList.item(i) !== this.closeButton) {
+                    if (!eleList.item(i).disabled && eleList.item(i) !== this.closeButton && eleList.item(i) !== this.maxButton && eleList.item(i) !== this.minButton) {
                         this.#disabledMap.set(eleList.item(i), eleList.item(i));
                         eleList.item(i).disabled = true;
                     }
@@ -53,10 +63,16 @@ export class Dialog {
         let bodyList = document.getElementsByTagName('body');
         this.#userSelect = bodyList[0].style.userSelect;
         
-        $f.loadTemplate(this.middleCenter, data.content, data.contentParam)
-        .then(this.loadSuccess.bind(this))
-        .catch(this.loadError.bind(this));
-
+        if ('component' === data.contentType) {
+            $f.loadUniqueComponent(this.middleCenter, data.content, data.contentParam)
+            .then(this.loadSuccess.bind(this))
+            .catch(this.loadError.bind(this));
+        } else {
+            $f.loadTemplate(this.middleCenter, data.content, data.contentParam)
+            .then(this.loadSuccess.bind(this))
+            .catch(this.loadError.bind(this));
+        }
+        
     }
 
     loadSuccess() {
@@ -79,12 +95,96 @@ export class Dialog {
             this.dialogBack.style.height = document.documentElement.scrollHeight + 'px';
         }
 
+        let rect = this.dialog.getBoundingClientRect();
+        this.#beforeMaxTop = window.scrollY + rect.y;
+        this.#beforeMaxLeft = window.scrollX + rect.x;
+        this.#beforeMaxWidth = rect.width;
+        this.#beforeMaxHeight = rect.height;
+        let middleCenterRect = this.middleCenter.getBoundingClientRect();
+        this.#beforeMaxMiddleCenterHeight = middleCenterRect.height;
+
+        let bodyList = document.getElementsByTagName('body');
+        let body = bodyList[0];
+        this.#activate(body);
     }
 
     loadError(exception) {
         this.close();
     }
 
+    getName() {
+        return this.#name;
+    }
+
+    show() {
+        this.dialog.style.display = 'flex';
+    }
+
+    hide() {
+        this.dialog.style.display = 'none';
+    }
+
+    min_click(event) {
+        let bodyList = document.getElementsByTagName('body');
+        let body = bodyList[0];
+        $f.appendLoadSingleComponent(body, 'minimumDialog', {'dialog': this});
+    }
+
+    max_click(event) {
+        
+        let minimumDialogController = $f.getComponentController('minimumDialog');
+        
+        let clientWidth = document.documentElement.clientWidth;
+        let clientHeight = document.documentElement.clientHeight - 1;
+        
+        let maxW = clientWidth;
+        let maxH = clientHeight;
+        
+        if (minimumDialogController && minimumDialogController.getContainer().children.length > 1) {
+            let minContainer = minimumDialogController.getContainer();
+            let minContainerRect = minContainer.getBoundingClientRect();
+            maxH -= minContainerRect.height;
+        }
+        
+        let rect = this.dialog.getBoundingClientRect();
+        let w = rect.width;
+        let h = rect.height;
+        
+        let middleCenterRect = this.middleCenter.getBoundingClientRect();
+        
+        let changeHeight = maxH - h;
+        let newDialogHeight = h - 2 + changeHeight;
+        let newMiddleCenterHeight = middleCenterRect.height + changeHeight;
+        
+        if (w !== maxW || h !== maxH) {
+            this.dialog.style.top = window.scrollY + 'px';
+            this.dialog.style.left = window.scrollX + 'px';
+            this.dialog.style.width = maxW + 'px';
+            this.dialog.style.height = newDialogHeight + 'px';
+            this.middleCenter.style.height = newMiddleCenterHeight + 'px';
+            this.#beforeMaxTop = window.scrollY + rect.y;
+            this.#beforeMaxLeft = window.scrollX + rect.x;
+            this.#beforeMaxWidth = w;
+            this.#beforeMaxHeight = h - 2;
+            this.#beforeMaxMiddleCenterHeight = middleCenterRect.height;
+        } else {
+            this.middleCenter.style.height = this.#beforeMaxMiddleCenterHeight + 'px';
+            this.dialog.style.top = this.#beforeMaxTop + 'px';
+            this.dialog.style.left = this.#beforeMaxLeft + 'px';
+            this.dialog.style.width = this.#beforeMaxWidth + 'px';
+            this.dialog.style.height = this.#beforeMaxHeight + 'px';
+        }
+        
+        let bodyList = document.getElementsByTagName('body');
+        let body = bodyList[0];
+        this.#activate(body);
+        
+    }
+
+    bar_dblclick(event) {
+        this.max_click(event);
+    }
+    
     close_click(event) {
         this.close();
     }
@@ -112,9 +212,11 @@ export class Dialog {
     }
 
     dialog_mousedown(event) {
-        for (const item of this.closeButtonTotal.values()) {
-            if (event.target === item) {
-                return;
+        if (this.closeButtonTotal) {
+            for (const item of this.closeButtonTotal.values()) {
+                if (event.target === item) {
+                    return;
+                }
             }
         }
         
@@ -122,9 +224,7 @@ export class Dialog {
             
             let bodyList = document.getElementsByTagName('body');
             let body = bodyList[0];
-            
-            body.appendChild(this.dialog);
-            this.closeButton.disabled = false;
+            this.#activate(body);
             
             this.#userSelect = body.style.userSelect;
             body.style.userSelect = 'none';
@@ -138,11 +238,38 @@ export class Dialog {
     dialog_click(event) {
         let bodyList = document.getElementsByTagName('body');
         let body = bodyList[0];
-        if (body.lastChild !== this.dialog && this.dialog !== null) {
-            let bodyList = document.getElementsByTagName('body');
-            bodyList[0].appendChild(this.dialog);
-            this.closeButton.disabled = false;
+        this.#activate(body);
+    }
+    
+    #activate(body) {
+        
+        let minimumDialogController = $f.getComponentController('minimumDialog');
+        
+        let lastChild = body.children.item(body.children.length - 1);
+        if (
+            (!minimumDialogController && lastChild !== this.dialog && this.dialog !== null) ||
+            (minimumDialogController && lastChild.previousSibling !== this.dialog && this.dialog !== null)
+        ) {
+            
+            body.removeChild(this.dialog);
+            body.appendChild(this.dialog);
+            if (this.closeButton) {
+                this.closeButton.disabled = false;
+            }
+            if (this.minButton) {
+                this.minButton.disabled = false;
+            }
+            if (this.maxButton) {
+                this.maxButton.disabled = false;
+            }
+            
+            if (minimumDialogController && minimumDialogController.getContainer()) {
+                body.removeChild(minimumDialogController.getContainer());
+                body.appendChild(minimumDialogController.getContainer());
+            }
+            
         }
+        
     }
 
     mousemoveSomewhere(event) {

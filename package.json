@@ -29,6 +29,6 @@
     "watch": "^1.0.2"
   },
   "dependencies": {
-    "fairysupport_js": "^1.8.1"
+    "fairysupport_js": "^1.9.0"
   }
 }

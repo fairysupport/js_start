@@ -25,7 +25,7 @@ export class SideMenu {
     loadSuccess() {
         this.container.style.height = document.documentElement.scrollHeight + 'px';
         this.container.style.left = '-' + this.container.offsetWidth + 'px';
-        setTimeout(this.openEffect.bind(this), 0);
+        setTimeout(this.openEffect.bind(this), 500);
     }
 
     loadError(exception) {
@@ -41,6 +41,12 @@ export class SideMenu {
     }
 
     open(openBtn) {
+        
+        let bodyList = document.getElementsByTagName('body');
+        let body = bodyList[0];
+        body.removeChild(this.container);
+        body.appendChild(this.container);
+        
         this.#openBtn = openBtn;
         this.container.style.height = document.documentElement.scrollHeight + 'px';
         this.container.style.left = '0px';
