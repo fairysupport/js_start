@@ -3,13 +3,13 @@ export class Validator {
     constructor() {
     }
 
-    init (target, property, newValue, oldValue, arg, event) {
+    init (target, property, newValue, oldValue, arg, event, untilNowResult) {
         let valid = true;
         valid = this.showMsg(arg, '');
         return valid;
     }
     
-    require (target, property, newValue, oldValue, arg, event) {
+    require (target, property, newValue, oldValue, arg, event, untilNowResult) {
         let valid = true;
         if (this.isEmpty(newValue)) {
             valid = this.showMsg(arg, $f.msg('errorRequired'));
@@ -17,7 +17,7 @@ export class Validator {
         return valid;
     }
     
-    intType (target, property, newValue, oldValue, arg, event) {
+    intType (target, property, newValue, oldValue, arg, event, untilNowResult) {
         let valid = true;
         if (this.isEmpty(newValue)) {
             return valid;
@@ -29,7 +29,7 @@ export class Validator {
         return valid;
     }
     
-    minValue (target, property, newValue, oldValue, arg, event) {
+    minValue (target, property, newValue, oldValue, arg, event, untilNowResult) {
         let valid = true;
         if (this.isEmpty(newValue)) {
             return valid;
@@ -42,7 +42,7 @@ export class Validator {
         return valid;
     }
     
-    maxValue (target, property, newValue, oldValue, arg, event) {
+    maxValue (target, property, newValue, oldValue, arg, event, untilNowResult) {
         let valid = true;
         if (this.isEmpty(newValue)) {
             return valid;
@@ -55,7 +55,7 @@ export class Validator {
         return valid;
     }
     
-    year (target, property, newValue, oldValue, arg, event) {
+    year (target, property, newValue, oldValue, arg, event, untilNowResult) {
         let valid = true;
         if (this.isEmpty(newValue)) {
             return valid;
@@ -64,7 +64,7 @@ export class Validator {
         return valid;
     }
     
-    month (target, property, newValue, oldValue, arg, event) {
+    month (target, property, newValue, oldValue, arg, event, untilNowResult) {
         let valid = true;
         if (this.isEmpty(newValue)) {
             return valid;
@@ -80,7 +80,7 @@ export class Validator {
         return valid;
     }
     
-    day (target, property, newValue, oldValue, arg, event) {
+    day (target, property, newValue, oldValue, arg, event, untilNowResult) {
         let valid = true;
         if (this.isEmpty(newValue)) {
             return valid;
@@ -96,7 +96,7 @@ export class Validator {
         return valid;
     }
     
-    ymd (target, property, newValue, oldValue, arg, event) {
+    ymd (target, property, newValue, oldValue, arg, event, untilNowResult) {
         let valid = true;
         if (this.isEmpty(newValue)) {
             return valid;
